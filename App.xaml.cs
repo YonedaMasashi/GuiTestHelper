@@ -1,4 +1,5 @@
-﻿using GuiTestHelper.View.TaskTray;
+﻿using GuiTestHelper.Model;
+using GuiTestHelper.View.TaskTray;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -21,6 +22,8 @@ namespace GuiTestHelper
             base.OnStartup(e);
             this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             taskTrayForm = new TaskTrayForm();
+
+            InputHistoryList.Instance().LoadHistory();
         }
 
         protected override void OnExit(ExitEventArgs e)

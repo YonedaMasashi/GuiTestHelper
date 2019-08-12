@@ -1,6 +1,9 @@
 ﻿using GuiTestHelper.FW;
+using GuiTestHelper.Model;
+using GuiTestHelper.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -17,18 +20,23 @@ using System.Windows.Shapes;
 
 namespace GuiTestHelper.View
 {
+    public class AutoCompData
+    {
+        public string Name;
+    }
+
     /// <summary>
     /// CaptureEditView.xaml の相互作用ロジック
     /// </summary>
     public partial class CaptureEditView : Window
     {
-
+        
         private System.Windows.Point clickPoint = new System.Windows.Point(0, 0);
         private System.Windows.Shapes.Rectangle currentRect = null;
         private Stack<System.Windows.Shapes.Rectangle> rectStack = new Stack<System.Windows.Shapes.Rectangle>();
-
+        
         public DelegateCommand UndoCommand { get; set; }
-
+        
         public CaptureEditView(Bitmap bitmap)
         {
             InitializeComponent();
@@ -51,6 +59,7 @@ namespace GuiTestHelper.View
             ImageBg.ImageSource = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap
                 (hbitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             DeleteObject(hbitmap);
+
         }
 
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
@@ -131,6 +140,20 @@ namespace GuiTestHelper.View
                 ErrorMessageLabel.Foreground = new SolidColorBrush(Colors.Blue);
                 ErrorMessageLabel.Text = "出力完了";
             }
+
+            // 履歴ファイル出力
+            InputHistoryList.Instance().AddOutputFolder(this.OutputFolderPath.Text);
+            if (string.IsNullOrEmpty(this.FileName.Text) == false)
+            {
+                InputHistoryList.Instance().AddOutputFileName(this.FileName.Text);
+            }
+            InputHistoryList.Instance().OutputHistory();
+
+            // オードコンプリートに追加
+            var autoComp = DataContext as CaptureEditViewModel;
+            autoComp.UpdateAutoCompOutputFolderPathSource();
+            autoComp.UpdateAutoCompOutputFileNameSource();
+            
         }
 
         private void UndoButton_Click(object sender, RoutedEventArgs e)
@@ -155,7 +178,6 @@ namespace GuiTestHelper.View
             // オブジェクトをキャンバスに追加
             this.ImageEditCanvas.Children.Add(this.currentRect);
         }
-
         private void ImageEditCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             // 「マウスを左クリックしていないとき、描画中のオブジェクトが無いとき」は何もしない
