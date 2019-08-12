@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TaskTrayForm));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.ToolStripMenuItem_Open = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,7 +40,8 @@
             // notifyIcon1
             // 
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
-            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "Gui Test Helper";
             this.notifyIcon1.Visible = true;
             // 
             // contextMenuStrip1
@@ -49,28 +51,29 @@
             this.ToolStripMenuItem_Open,
             this.ToolStripMenuItem_Exit});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(290, 114);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(190, 48);
             // 
             // ToolStripMenuItem_Open
             // 
             this.ToolStripMenuItem_Open.Name = "ToolStripMenuItem_Open";
             this.ToolStripMenuItem_Open.ShortcutKeyDisplayString = "Ctrl+Shift+p";
-            this.ToolStripMenuItem_Open.Size = new System.Drawing.Size(289, 36);
+            this.ToolStripMenuItem_Open.Size = new System.Drawing.Size(189, 22);
             this.ToolStripMenuItem_Open.Text = "キャプチャ";
             this.ToolStripMenuItem_Open.Click += new System.EventHandler(this.ToolStripMenuItem_Open_Click);
             // 
             // ToolStripMenuItem_Exit
             // 
             this.ToolStripMenuItem_Exit.Name = "ToolStripMenuItem_Exit";
-            this.ToolStripMenuItem_Exit.Size = new System.Drawing.Size(289, 36);
+            this.ToolStripMenuItem_Exit.Size = new System.Drawing.Size(189, 22);
             this.ToolStripMenuItem_Exit.Text = "終了";
             this.ToolStripMenuItem_Exit.Click += new System.EventHandler(this.ToolStripMenuItem_Exit_Click);
             // 
             // TaskTrayForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 21F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(436, 257);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "TaskTrayForm";
             this.Text = "TaskTrayForm";
             this.contextMenuStrip1.ResumeLayout(false);

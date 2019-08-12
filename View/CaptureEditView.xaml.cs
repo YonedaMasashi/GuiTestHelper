@@ -209,5 +209,34 @@ namespace GuiTestHelper.View
             // 描画中オブジェクトの参照を削除
             this.currentRect = null;
         }
+
+        private void OutputFolderPath_Drop(object sender, DragEventArgs e)
+        {
+            string[] files = e.Data.GetData(DataFormats.FileDrop) as string[];
+            if (files != null)
+            {
+                CaptureEditViewModel vm = this.DataContext as CaptureEditViewModel;
+                foreach (var s in files)
+                {
+                    if (File.Exists(s) == true)
+                    {
+                        vm.SelectedFolderPathName = System.IO.Path.GetDirectoryName(s);
+                        vm.SelectedFileNameName = System.IO.Path.GetFileName(s);
+                    } else
+                    {
+                        vm.SelectedFolderPathName = s;
+                    }
+                }
+            }
+        }
+
+        private void OutputFolderPath_PreviewDragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop, true))
+                e.Effects = DragDropEffects.Copy;
+            else
+                e.Effects = DragDropEffects.None;
+            e.Handled = true;
+        }
     }
 }

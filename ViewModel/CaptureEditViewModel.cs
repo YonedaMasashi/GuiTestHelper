@@ -10,17 +10,10 @@ using System.Threading.Tasks;
 namespace GuiTestHelper.ViewModel
 {
 
-    public class AutoCompData
-    {
-        public string Name { get; set; }
-    }
-
     public class CaptureEditViewModel : ViewModelBase
     {
-
-        // オートコンプリートリスト:フォルダパス
-        private ObservableCollection<AutoCompData> _AutoCompOutputFolderPathSource;
-        public ObservableCollection<AutoCompData> AutoCompOutputFolderPathSource {
+        private ObservableCollection<string> _AutoCompOutputFolderPathSource;
+        public ObservableCollection<string> AutoCompOutputFolderPathSource {
 
             get {
                 UpdateAutoCompOutputFolderPathSource();
@@ -31,11 +24,12 @@ namespace GuiTestHelper.ViewModel
         /// <summary>
         /// オートコンプリートで選択されたもの
         /// </summary>
-        private AutoCompData _selectedFolderPath;
-        public AutoCompData SelectedFolderPath {
+        private string _selectedFolderPath;
+        public string SelectedFolderPath {
             get { return _selectedFolderPath; }
             set {
                 _selectedFolderPath = value;
+                OnPropertyChanged("SelectedFolderPath");
             }
         }
 
@@ -45,28 +39,33 @@ namespace GuiTestHelper.ViewModel
         private string _selectedFolderPathName;
         public string SelectedFolderPathName {
             get { return _selectedFolderPathName; }
-            set { _selectedFolderPathName = value; }
+            set {
+                _selectedFolderPathName = value;
+                OnPropertyChanged("SelectedFolderPathName");
+            }
         }
 
         public void UpdateAutoCompOutputFolderPathSource()
         {
             if (_AutoCompOutputFolderPathSource == null)
             {
-                _AutoCompOutputFolderPathSource = new ObservableCollection<AutoCompData>();
+                _AutoCompOutputFolderPathSource = new ObservableCollection<string>();
             }
-            _AutoCompOutputFolderPathSource.Clear();
 
             foreach (var elem in InputHistoryList.Instance().InputHistory.OutputFolderHistory)
             {
-                _AutoCompOutputFolderPathSource.Add(new AutoCompData() { Name = elem });
+                if (_AutoCompOutputFolderPathSource.Contains(elem) == false)
+                {
+                    _AutoCompOutputFolderPathSource.Add(elem);
+                }
             }
         }
 
 
 
         // オートコンプリートリスト:ファイル名
-        private ObservableCollection<AutoCompData> _AutoCompOutputFileNameSource;
-        public ObservableCollection<AutoCompData> AutoCompOutputFileNameSource {
+        private ObservableCollection<string> _AutoCompOutputFileNameSource;
+        public ObservableCollection<string> AutoCompOutputFileNameSource {
 
             get {
                 UpdateAutoCompOutputFileNameSource();
@@ -77,11 +76,12 @@ namespace GuiTestHelper.ViewModel
         /// <summary>
         /// オートコンプリートで選択されたもの
         /// </summary>
-        private AutoCompData _selectedFileName;
-        public AutoCompData SelectedFileName {
+        private string _selectedFileName;
+        public string SelectedFileName {
             get { return _selectedFileName; }
             set {
                 _selectedFileName = value;
+                OnPropertyChanged("SelectedFileName");
             }
         }
 
@@ -91,18 +91,24 @@ namespace GuiTestHelper.ViewModel
         private string _selectedFileNameName;
         public string SelectedFileNameName {
             get { return _selectedFileNameName; }
-            set { _selectedFileNameName = value; }
+            set {
+                _selectedFileNameName = value;
+                OnPropertyChanged("SelectedFileNameName");
+            }
         }
         public void UpdateAutoCompOutputFileNameSource()
         {
             // フォルダパス
             if (_AutoCompOutputFileNameSource == null)
             {
-                _AutoCompOutputFileNameSource = new ObservableCollection<AutoCompData>();
+                _AutoCompOutputFileNameSource = new ObservableCollection<string>();
             }
             foreach (var elem in InputHistoryList.Instance().InputHistory.OutputFileNameHistory)
             {
-                _AutoCompOutputFileNameSource.Add(new AutoCompData() { Name = elem });
+                if (_AutoCompOutputFileNameSource.Contains(elem) == false)
+                {
+                    _AutoCompOutputFileNameSource.Add(elem);
+                }
             }
         }
     }
