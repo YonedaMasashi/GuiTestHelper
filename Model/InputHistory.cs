@@ -72,6 +72,10 @@ namespace GuiTestHelper.Model
 
         public void LoadHistory()
         {
+            if (File.Exists(GetFilePath()) == false)
+            {
+                return;
+            }
             using (StreamReader sr = new StreamReader(GetFilePath(), Encoding.GetEncoding("Shift_JIS")))
             {
                 string jsonstring = sr.ReadToEnd();
